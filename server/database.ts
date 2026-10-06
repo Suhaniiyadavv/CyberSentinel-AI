@@ -1,6 +1,3 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import crypto from 'node:crypto';
 import Papa from 'papaparse';
 import {
   AuditLog,
@@ -14,6 +11,8 @@ import {
   SigmaRule,
   User,
 } from './types.js';
+import { hashPassword } from './utils/crypto.js';
+import { SAMPLE_SECURITY_EVENTS_CSV } from '../src/data/sampleDataset.js';
 import { IsolationForest } from './ml/isolationForest.js';
 import { RandomForestClassifier } from './ml/randomForest.js';
 import { PreprocessingPipeline } from './services/preprocessing.js';
@@ -55,7 +54,7 @@ export class SOCDatabase {
   }
 
   private hashPassword(password: string): string {
-    return crypto.createHash('sha256').update(password + '_salt_cybersentinel_2026').digest('hex');
+    return hashPassword(password);
   }
 
   private seedUsers(): void {
@@ -118,13 +117,7 @@ export class SOCDatabase {
   }
 
   private async loadSampleDataset(): Promise<void> {
-    const sampleCsvPath = path.resolve(process.cwd(), 'data', 'sample_security_events.csv');
-    if (!fs.existsSync(sampleCsvPath)) {
-      console.warn(`[SOC Database] Sample CSV not found at ${sampleCsvPath}`);
-      return;
-    }
-
-    const csvContent = fs.readFileSync(sampleCsvPath, 'utf8');
+    const csvContent = SAMPLE_SECURITY_EVENTS_CSV;
     const parsed = Papa.parse(csvContent, { header: true, skipEmptyLines: true });
 
     let idx = 1;
