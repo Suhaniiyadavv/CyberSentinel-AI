@@ -1,0 +1,6 @@
+{
+  "name": "CyberSentinel AI - Cyber Incident Detection & Automated Response Platform",
+  "description": "Production-grade AI-powered Security Operations Center (SOC) platform featuring Isolation Forest anomaly detection, supervised incident classification, MITRE ATT&CK mapping, IoC extraction, and automated response recommendations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
